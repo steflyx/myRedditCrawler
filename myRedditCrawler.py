@@ -1,3 +1,6 @@
+#This code is a development of the code found at
+#https://www.textjuicer.com/2019/07/crawling-all-submissions-from-a-subreddit/
+
 import requests
 import time
 import pandas as pd
@@ -5,13 +8,7 @@ import pandas as pd
 url = "https://api.pushshift.io/reddit/search/submission"
 
 def crawl_page(subreddit: str, sort_by: str, last_page = None):
-  """Crawl a page of results from a given subreddit.
-
-  :param subreddit: The subreddit to crawl.
-  :param last_page: The last downloaded page.
-
-  :return: A page or results.
-  """
+  
   params = {"subreddit": subreddit, "size": 500, "sort": "desc", "sort_type": sort_by}
   if last_page is not None:
     if len(last_page) > 0:
@@ -27,14 +24,7 @@ def crawl_page(subreddit: str, sort_by: str, last_page = None):
   return results.json()["data"]
 
 def crawl_subreddit(subreddit, sort_by, max_submissions = 2000):
-  """
-  Crawl submissions from a subreddit.
-
-  :param subreddit: The subreddit to crawl.
-  :param max_submissions: The maximum number of submissions to download.
-
-  :return: A list of submissions.
-  """
+  
   submissions = []
   last_page = None
   while last_page != [] and len(submissions) < max_submissions:
@@ -45,7 +35,7 @@ def crawl_subreddit(subreddit, sort_by, max_submissions = 2000):
   return submissions[:max_submissions]
 
 
-latest_submissions = crawl_subreddit("pic", "created_utc")
+latest_submissions = crawl_subreddit("coronavirusDownunder", "created_utc")
 
 
 df = pd.DataFrame(latest_submissions)
